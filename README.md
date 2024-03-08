@@ -1,6 +1,6 @@
 # Music Album Microservice - Part 2
 ## Overview
-This repository is part of a series of projects to develop a scalable distributed system running on AWS. In this particular project, the focus is on implementing a servlet application that interacts with a database. Here are the key components of the project:
+This repository is the second part of a series of projects to develop a scalable distributed system running on AWS. It directly builds on the [first part](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main). This project focuses on implementing a database that persists data from the existing servlet application. Here are the key components of the project:
 
 - **Client Modifications**:
   - Minor changes to the client from [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main) are required.
@@ -20,100 +20,76 @@ This repository is part of a series of projects to develop a scalable distribute
   - Identify and address bottlenecks, such as database or servlet performance.
   - Consider increasing capacity for the bottlenecked components, such as using bigger database servers or adding more load-balanced servlet instances.
 
-
-NOTE: update project structure below
 ## Project Structure
+See [part one](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main#project-structure) of this project series. 
 
-### Client Design
+## Data Model
 
-The architecture I implemented for this project's client component strongly emphasizes Java's synchronization tools to prevent potential race conditions and deadlock situations. I leveraged classes like Java's `CountDownLatch`, `ExecutorService`, and `AtomicInteger` to effectively manage thread interactions, minimizing contention and maximizing request throughput.
+Creating a data model was straightforward. In my servlet, the request process is as follows: send a POST request, create a UUID inside the servlet, return the UUID in the POST response (per API spec), parse that response in my client to get the UUID, and immediately use the UUID to send a GET request with that UUID. In my database, each UUID is used as a key to retrieve my ImageData and AlbumProfile information, both stored as JSON strings. This is explained in further detail in the following sections. See Image 1 for a model example.
 
-### Major Classes
+![Database data model image]()
 
-#### AlbumClient:
-The `AlbumClient` class simulates client-server interactions by initializing and loading a server with a predefined number of threads. It uses Java's synchronization mechanisms, such as `CountDownLatch`, to control concurrent execution and prevent race conditions. After successfully executing these interactions, the class calculates and prints various performance metrics, including throughput and latency, to evaluate the server's performance.
+**Image 1:** Database data model
 
-#### AlbumThreadRunnable:
-The `AlbumThreadRunnable` class represents a thread that sends a specified number of GET and POST requests to a server, tracking the success, failure, and latency of these requests. It uses the [Swagger-generated API client](https://app.swaggerhub.com/apis/IGORTON/AlbumStore/1.0.0) to interact with the server. This class alternates between making POST and GET requests in groups to simulate client interactions and calculates various performance metrics. The measured metrics, including the number of successful and failed requests, request latency, and other statistics, are aggregated and then updated in the `AlbumClient` class to assess the server's performance.
+For this project, I store the same image in each POST request. The image size is 3,475 bytes. See the **Image 2** below.
 
-#### LoadCalculations:
-The `LoadCalculations` class provides various statistical calculations for a list of latencies. It includes the methods to calculate the mean, median, p99 (99th percentile), minimum, and maximum response times in milliseconds. The class sorts the latencies in ascending order during initialization, ensuring accurate statistical calculations. It provides a convenient way to analyze latency data collected during load testing or performance monitoring.
+![Image to persist in DB](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/testingImage.png)
 
-#### WriteToCsv:
-The `WriteToCsv` class is responsible for managing the writing of load test results to a CSV file. It uses Apache POI, a popular library for working with Microsoft Office documents, to create and write data to an Excel file (XLSX format). It ensures that data is written in a structured manner and multiple threads can safely contribute their results to the same file without conflicts. After the server load test is completed, all results are written to an Excel file.
+**Image 2:** The image is stored in the database.
 
-### Packages
+## Database Choice
 
-As already mentioned, the client imports and utilizes existing Java packages. The Gson library converts Album and Image data into JSON format for JSON serialization. Next, the Apache POI library writes the server load test results to Excel sheets for data collection. Lastly, the Swagger auto-generated client library Ian provided us creates a simple API client that is used to make thread-safe GET and POST calls.
+Determining which database to use was challenging. From the options listed in the assignment description, the only database I had previous experience using was MongoDB. MongoDB is a non-relational document database that supports JSON-like storage and fast key-value lookups, so it is an excellent choice for this assignment. However, I wanted to try something new. After researching DynomoDB, YugabyteDB, Redis, and MySQL, I used AWS’s RDS service to create a MySQL database.
 
-## Results
+### MySQL Configuration
 
-My results are interesting for both part 1 and 2. I struggled to collect results because my home network only has a max upload speed of 11 Mbps. When loading a server and sending thousands of small images, response times become relatively slow for POST requests. Because of this, I had to travel and commute to multiple locations to utilize the home networks of friends with a faster upload speed. However, this led to results not always being consistent. Almost all my tests and results are collected on the same house network with an upload speed of 350+ Mbps, but my Go Server tests with a thread group size of 30 are on a slower network with upload speeds of 150 Mbps. The decrease in network upload speed caused my throughput results for my Go server thread group size 30 to be less than expected. This is why my plots for my Goserver become closer horizontal when going from a thread group size of 20 to a size of 30.
-Also, I misread the instructions and thought we had to test each thread group size three times. That is why each server has so many images and Excel sheets of different group sizes. For the main plots, I take the average of the three tests for my throughput and wall time plots. For individual thread group result screenshots, I included the best throughput results.
+Typically, NoSQL databases are used with data in a flat key-value structure. However, with simple data like the ImageData and AlbumProfile, a correctly configured MySQL table suffices. To create a fast and efficient low-latency key-value store using Amazon RDS for MySQL, each entry to my table had a UUID named AlbumID defined as a Primary Key. I created my table, as seen below.
 
-### Client Part 1 Results
+![Database data model image]()
 
-Through testing, I found a difference between server load tests when comparing the Go and Java servers. Both servers saw increased throughput as more thread groups were called and ran. Overall, the Java server ran faster for all tests.
+**Image 3:** SQL statement used to create albumRequests table.
 
-#### Java Server- Thread Group Size 10
-![Java Server- Thread Group Size 10 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/JavaServer/Java_Server_10Threads_T3.png)
+When AlbumID is defined as a primary key, an associated index is created, leading to fast query performance. ImageData and AlbumProfile are stored as JSON strings rather than the JSON data type to improve performance. Then, as long as I have a valid UUID, I can query either ImageData or AlbumProfile or both. My GET requests only query and pull the AlbumProfile information, which is then returned in the response.
 
-#### Java Server- Thread Group Size 20
-![Java Server- Thread Group Size 20 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/JavaServer/Java_Server_20Threads_T2.png)
+## Part 3- Single Server/DB Results
 
-#### Java Server- Thread Group Size 30
-![Java Server- Thread Group Size 30 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/JavaServer/Java_Server_30Threads_T2.png)
+### Part 3- Output Window Results
 
-#### Go Server- Thread Group Size 10
-![Go Server- Thread Group Size 10 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/GoServer/Go_Server_10Threads_T2.png)
+**10/10/2 Configuration**  
+![Image 4](link_to_screenshot_4)
 
-#### Go Server- Thread Group Size 20
-![Go Server- Thread Group Size 20 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/GoServer/Go_Server_20Threads_T1.png)
+**10/20/2 Configuration**  
+![Image 5](link_to_screenshot_5)
 
-#### Go Server- Thread Group Size 30
-![Go Server- Thread Group Size 30 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/GoServer/Go_Server_30Threads_T2.png)
+**10/30/2 Configuration**  
+![Image 6](link_to_screenshot_6)
 
-### Plot of Load Results
+### Part 3- Table Results
 
-Since I ran three trials for each group size, I took each server's average throughput and wall time. See below.
-![Plot Load Results Part 1 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part1/ImageResults/Plot_Load_Results_Part1.png)
+**Table 1:** Results for Part 3 of Assignment 2
 
-### Client Part 2 Results
+| Configuration | # Successful Requests | # Failed Requests | Throughput (req/sec) | Wall Time (sec) | Mean POST Response Times (ms) | Median POST Response Times (ms) | p99 POST Response Times (ms) | Min POST Response Times (ms) | Max POST Response Times (ms) | Mean GET Response Times (ms) | Median GET Response Times (ms) | p99 GET Response Times (ms) | Min GET Response Times (ms) | Max GET Response Times (ms) |
+|---------------|-----------------------|-------------------|-----------------------|-----------------|--------------------------------|---------------------------------|------------------------------|-----------------------------|-----------------------------|-----------------------------|------------------------------|-----------------------------|-----------------------------|-----------------------------|
+| 10/10/2       | 200,000               | 0                 | 2675.26               | 74.76           | 35.65                          | 33                              | 3091.69                      | 600,000                     | 0                           | 3206.31                     | 129.38                       | 187.13                     | 54.58                       | 74.86                       |
+| 10/20/2       | 400,000               | 0                 | 3206.31               | 129.38          | 54.58                          | 50                              | 135                          | 301                         | 16                          | 16                          | 17                           | 302                         | 607                         | 988                         |
+| 10/30/2       | 600,000               | 0                 | 3206.31               | 187.13          | 74.86                          | 62                              | 77                           | 135                         | 301                         | 16                          | 16                           | 17                          | 302                         | 607                         |
 
-Like Client Part 1, the Java server produced faster throughputs and wall times for me. See the results below. All my throughput results between thread group sizes on my servers for Part 1 and Part 2 were within 5% of each other.
+## Part 4- Two Load Balanced Servers/DB Results
 
-#### Java Server- Thread Group Size 10
-![Java Server- Thread Group Size 10 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/JavaServer/Java_Server_10Threads_T3.png)
+### Part 4- Output Window Results
 
-#### Java Server- Thread Group Size 20
-![Java Server- Thread Group Size 20 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/JavaServer/Java_Server_20Threads_T2.png)
+**10/10/2 Configuration**  
+![Image 7](link_to_screenshot_7)
 
-#### Java Server- Thread Group Size 30
-![Java Server- Thread Group Size 30 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/JavaServer/Java_Server_30Threads_T2.png)
+**10/20/2 Configuration**  
+![Image 8](link_to_screenshot_8)
 
-#### Go Server- Thread Group Size 10
-![Go Server- Thread Group Size 10 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/GoServer/Go_Server_10Threads_T3.png)
+**10/30/2 Configuration**  
+![Image 9](link_to_screenshot_9)
 
-#### Go Server- Thread Group Size 20
-![Go Server- Thread Group Size 20 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/GoServer/Go_Server_20Threads_T1.png)
+### Part 4- Table Results
 
-#### Go Server- Thread Group Size 30
-![Go Server- Thread Group Size 30 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/GoServer/Go_Server_30Threads_T1.png)
+**Table 2:** Results for Part 4 of Assignment 2
 
-### Plot of Load Results
+| Configuration | # Successful Requests | # Failed Requests | Throughput (req/sec) | Wall Time (sec) | Mean POST Response Times (ms) | Median POST Response Times (ms) | p99 POST Response Times (ms) | Min POST Response Times (ms) | Max POST Response Times (ms) | Mean GET Response Times (ms) | Median GET Response Times (ms) | p99 GET Response Times (
 
-Since I ran three trials for each group size, I took each server's average throughput and wall time. See below.
-![Plot Load Results Part 2 Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/Plot_Load_Results_Part2.png)
-
-### Plots
-
-#### Plot of Loads on Each Server
-
-This plot shows the throughput vs. time for each server for the different-sized thread groups. As the throughput increases, so does the thread group size. Each point represents a thread group size. Since I accidentally recorded three runs for each thread group size, each point represents the average results for that thread group.
-
-The plot below shows that results from Part 1 and Part 2 are very close for each server. However, this plot makes it clear that for my server load results, the Java server runs faster than the Go server.
-
-![Plot Load Results Comparison Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/Plot_Load_Results_Comparison.png)
-
-#### Plot ThroughPut Over Time
-![Plot Throughput Over Time Image](https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/Part2/ImageResults/Plot_Throughput_Over_Time.png)
