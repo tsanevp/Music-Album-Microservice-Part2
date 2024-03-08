@@ -1,6 +1,6 @@
 # Music Album Microservice - Part 2
 ## Overview
-This repository is the second part of a series of projects to develop a scalable distributed system running on AWS. It directly builds on the [first part](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main). This project focuses on implementing a database that persists data from the existing servlet application. Here are the key components of the project:
+This repository is Part 2 of a series of projects to develop a scalable distributed system running on AWS. It directly builds on the [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main). This project focuses on implementing a database that persists data from the existing servlet application. Here are the key components of the project:
 
 - **Client Modifications**:
   - Minor changes to the client from [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main) are required.
@@ -21,13 +21,13 @@ This repository is the second part of a series of projects to develop a scalable
   - Consider increasing capacity for the bottlenecked components, such as using bigger database servers or adding more load-balanced servlet instances.
 
 ## Project Structure
-See [part one](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main#project-structure) of this project series. 
+See [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main#project-structure) of this project series. 
 
 ## Data Model
 
 Creating a data model was straightforward. In my servlet, the request process is as follows: send a POST request, create a UUID inside the servlet, return the UUID in the POST response (per API spec), parse that response in my client to get the UUID, and immediately use the UUID to send a GET request with that UUID. In my database, each UUID is used as a key to retrieve my ImageData and AlbumProfile information, both stored as JSON strings. This is explained in further detail in the following sections. See Image 1 for a model example.
 
-![Database data model image]()
+![Database data model image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Data_Model_SQL.png)
 
 **Image 1:** Database data model
 
@@ -45,7 +45,7 @@ Determining which database to use was challenging. From the options listed in th
 
 Typically, NoSQL databases are used with data in a flat key-value structure. However, with simple data like the ImageData and AlbumProfile, a correctly configured MySQL table suffices. To create a fast and efficient low-latency key-value store using Amazon RDS for MySQL, each entry to my table had a UUID named AlbumID defined as a Primary Key. I created my table, as seen below.
 
-![Database data model image]()
+![Database data model image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Data_Model_SQL.png)
 
 **Image 3:** SQL statement used to create albumRequests table.
 
