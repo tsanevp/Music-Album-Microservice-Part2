@@ -1,7 +1,27 @@
-# Music Album Microservice - Part 1
+# Music Album Microservice - Part 2
 ## Overview
-This repository is part of a series of projects to develop a scalable distributed system running on AWS. In this particular project, I focus on building a simple music service that stores data about albums. The primary tasks include implementing a basic API and developing a client for performance testing.
+This repository is part of a series of projects to develop a scalable distributed system running on AWS. In this particular project, the focus is on implementing a servlet application that interacts with a database. Here are the key components of the project:
 
+- **Client Modifications**:
+  - Minor changes to the client from [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main) are required.
+  - Print out the number of successful and failed requests after the test.
+
+- **Database Integration**:
+  - Implement a database to persist album information received during the doPost() method and retrieve album information by primary key in the doGet() method.
+  - Choose a database that provides necessary safety guarantees and high performance, such as AWS RDS, MongoDB, DynamoDB, or others.
+  - Design the database considering a balanced workload of 50% write and 50% read.
+
+- **Load Balancing**:
+  - Introduce load balancing using AWS Elastic Load Balancing with 2 free tier EC2 instances.
+  - Configure load balancing to distribute traffic evenly among servlet instances.
+   
+- **System Tuning**:
+  - Run the client against the load-balanced servlets to measure overall throughput.
+  - Identify and address bottlenecks, such as database or servlet performance.
+  - Consider increasing capacity for the bottlenecked components, such as using bigger database servers or adding more load-balanced servlet instances.
+
+
+NOTE: update project structure below
 ## Project Structure
 
 ### Client Design
