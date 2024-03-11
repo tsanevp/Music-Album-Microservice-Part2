@@ -157,7 +157,7 @@ With these changes, as I scaled up my DB, I increased my Hikari connection pool 
 
 In total, I conducted five additional optimization tests. They each had the configurations seen in the table below.
 
-## Table 3: Configurations of optimization tests.
+**Table 3:** Configurations of optimization tests.
 ![Results for Part 3 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part3_TableResults.png)
 
 Based on the optimization tests above, my DB and Servlets CPU usage was reasonable. Five peaks are seen, with the second and third peaks appearing as plateaus.
@@ -175,7 +175,7 @@ Further, regarding the servlet CPU usage, as the request distribution goes from 
 
 From these optimizations, I achieved the following throughput % improvements.
 
-## Table 4: % Change in throughput across all 10/30/2 phase tests
+**Table 4:** % Change in throughput across all 10/30/2 phase tests
 ![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table4_Throughput_Comp_10-30-2.png)
 
 # Part 5 - Output Window Results
@@ -212,40 +212,59 @@ From these optimizations, I achieved the following throughput % improvements.
 
 # Part 5 - Table Results
 
-## Table 5: Measured Results for Part 5 of Assignment 2
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+**Table 5:** Measured Results for Part 5
 
-## Table 6: POST Calculated Results for Part 5 of Assignment 2
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table5_Measured_Results.png)
 
-## Table 7: GET Calculated Results for Part 5 of Assignment 2
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+**Table 6:** POST Calculated Results for Part 5
+
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table6_Post_Results.png)
+
+
+**Table 7:** GET Calculated Results for Part 5
+
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table7_Get_Results.png)
+
 
 # Part 5 - Server/DB Results Comparison
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
 
-## Table 8: Measured Results for Part 5 of Assignment 2
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+**Table 8:** Measured Results for Part 5
 
-## Table 9: POST Calculated Results for Part 5 of Assignment 2
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table8_Measured_Results_Part5.png)
 
-## Table 10: GET Calculated Results for Part 5 of Assignment 2
-![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+**Table 9:** POST Calculated Results for Part 5
+
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table9_Post_Results_Part5.png)
+
+
+**Table 10:** GET Calculated Results for Part 5
+
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table10_Get_Results_Part5.png)
+
 
 # Supplemental Screenshots
 
 ## ALB & Target Groups
+![Application Load Balancer configuration Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-ALB-Setup.png)
+<p align="center">
+  <b>Image 17:</b>  My Application Load Balancer configuration.
+</p>
 
-Image 17: My Application Load Balancer configuration.
-
-Image 18: My target group configuration for my three servlets.
+![Target group configuration each servlet Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-TG-Setup.png)
+<p align="center">
+  <b>Image 18:</b> My target group configuration for my three servlets.
+</p>
 
 ## DB After Testing
 
 Below, I have included a screenshot of my DB after performing a 10/30/2 phase test. As seen, the DB now contains 301,000 entries, with the first entry printed. The additional 1,000 entries are from my initialization phase.
 
-Image 19: MySQL DB after the 10/30/2 phase test.
+![MySQL DB after the 10/30/2 phase test Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-TG-Setup.png)
+<p align="center">
+  <b>Image 19:</b> MySQL DB after the 10/30/2 phase test.
+</p>
 
 After each test, I cleared my DB and deleted all entries. This helped keep the DB size relatively small and consistent across all tests. Further, deleting entries after each test reduced the data the DB had to process during writes and queries. The assignment did not specify this was not allowed, and since it helped reduce latencies across requests, I took advantage of it.
 
@@ -253,10 +272,22 @@ I could never connect to MySQL DB locally using MySQL Workbench or DBeaver. Afte
 
 ## CPU Utilization For DB/EC2 Instances Across All Tests
 
-Image 20: MySQL DB CPU utilization across all phase tests.
+![MySQL DB after the 10/30/2 phase test Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-DB-CPU-UtilizationComparison.png)
+<p align="center">
+  <b>Image 20:</b> MySQL DB CPU utilization across all phase tests.
+</p>
 
-Image 21: MySQL Servlet 1 CPU utilization across all phase tests.
+![MySQL DB after the 10/30/2 phase test Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-Servlet1-CPU-UtilizationComparison.png)
+<p align="center">
+  <b>Image 21:</b> MySQL Servlet 1 CPU utilization across all phase tests.
+</p>
 
-Image 22: MySQL Servlet 2 CPU utilization across all phase tests.
+![MySQL DB after the 10/30/2 phase test Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-Servlet2-CPU-UtilizationComparison.png)
+<p align="center">
+  <b>Image 22:</b> MySQL Servlet 2 CPU utilization across all phase tests.
+</p>
 
-Image 23: MySQL Servlet 3 CPU utilization across all phase tests.
+![MySQL DB after the 10/30/2 phase test Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-Servlet3-CPU-UtilizationComparison.png)
+<p align="center">
+  <b>Image 23:</b> MySQL Servlet 3 CPU utilization across all phase tests.
+</p>
