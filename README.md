@@ -44,7 +44,7 @@ For this project, I store the same image in each POST request. The image size is
 
 ## Database Choice
 
-Determining which database to use was challenging. From the options listed in the assignment description, the only database I had previous experience using was MongoDB. MongoDB is a non-relational document database that supports JSON-like storage and fast key-value lookups, so it is an excellent choice for this assignment. However, I wanted to try something new. After researching DynomoDB, YugabyteDB, Redis, and MySQL, I used AWS’s RDS service to create a MySQL database.
+Determining which database to use was challenging. From the options listed in the assignment description, the only database I had previous experience using was MongoDB. MongoDB is a non-relational document database that supports JSON-like storage and fast key-value lookups, so it is an excellent choice. However, I wanted to try something new. After researching DynomoDB, YugabyteDB, Redis, and MySQL, I used AWS’s RDS service to create a MySQL database.
 
 ### MySQL Configuration
 
