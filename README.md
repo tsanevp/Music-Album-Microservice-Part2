@@ -1,4 +1,4 @@
-# Music Album Microservice - Part 2
+![image](https://github.com/tsanevp/Music-Album-Microservice-Part2/assets/78775944/0aa8ec26-1653-4f3a-9d66-273d739bd243)# Music Album Microservice - Part 2
 ## Overview
 This repository is Part 2 of a series of projects to develop a scalable distributed system running on AWS. It directly builds on the [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main). This project focuses on implementing a database that persists data from the existing servlet application. Here are the key components of the project:
 
@@ -66,22 +66,26 @@ An associated index is created when AlbumID is defined as a primary key, leading
 
 **10/10/2 Configuration**  
 ![10/10/2 Single Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-10-1Servlet1Db.png)
+<p align="center">
+  <b>Image 4:</b>  Screenshot of output window for 10/10/2 run configuration.
+</p>
 
 **10/20/2 Configuration**  
 ![10/20/2 Single Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-1Servlet1Db.png)
+<p align="center">
+  <b>Image 5:</b>  Screenshot of output window for 10/20/2 run configuration.
+</p>
 
 **10/30/2 Configuration**  
 ![10/30/2 Single Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-30-1Servlet1Db.png)
+<p align="center">
+  <b>Image 6:</b>  Screenshot of output window for 10/30/2 run configuration.
+</p>
 
 ### Part 3- Table Results
 
-**Table 1:** Results for Part 3 of Assignment 2
-
-| Configuration | # Successful Requests | # Failed Requests | Throughput (req/sec) | Wall Time (sec) | Mean POST Response Times (ms) | Median POST Response Times (ms) | p99 POST Response Times (ms) | Min POST Response Times (ms) | Max POST Response Times (ms) | Mean GET Response Times (ms) | Median GET Response Times (ms) | p99 GET Response Times (ms) | Min GET Response Times (ms) | Max GET Response Times (ms) |
-|---------------|-----------------------|-------------------|-----------------------|-----------------|--------------------------------|---------------------------------|------------------------------|-----------------------------|-----------------------------|-----------------------------|------------------------------|-----------------------------|-----------------------------|-----------------------------|
-| 10/10/2       | 200,000               | 0                 | 2675.26               | 74.76           | 35.65                          | 33                              | 3091.69                      | 600,000                     | 0                           | 3206.31                     | 129.38                       | 187.13                     | 54.58                       | 74.86                       |
-| 10/20/2       | 400,000               | 0                 | 3206.31               | 129.38          | 54.58                          | 50                              | 135                          | 301                         | 16                          | 16                          | 17                           | 302                         | 607                         | 988                         |
-| 10/30/2       | 600,000               | 0                 | 3206.31               | 187.13          | 74.86                          | 62                              | 77                           | 135                         | 301                         | 16                          | 16                           | 17                          | 302                         | 607                         |
+**Table 1:** Results for Part 3
+![Results for Part 3 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part3_TableResults.png)
 
 ## Part 4- Two Load Balanced Servers/DB Results
 
@@ -89,16 +93,26 @@ An associated index is created when AlbumID is defined as a primary key, leading
 
 **10/10/2 Configuration**  
 ![10/10/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-10-2Servlets1Db.png)
+<p align="center">
+  <b>Image 7:</b>  Screenshot of output window for 10/10/2 run configuration.
+</p>
 
 **10/20/2 Configuration**  
 ![10/20/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-2Servlets1Db.png)
+<p align="center">
+  <b>Image 8:</b>  Screenshot of output window for 10/20/2 run configuration.
+</p>
 
 **10/30/2 Configuration**  
 ![10/30/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-30-2Servlets1Db-t3small.png)
+<p align="center">
+  <b>Image 9:</b>  Screenshot of output window for 10/30/2 run configuration.
+</p>
 
 ### Part 4- Table Results
 
-**Table 2:** Results for Part 4 of Assignment 2
+**Table 2:** Results for Part 4
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
 
 # Part 5 - Optimized Server/DB Results - 10/30/2 Config
 
@@ -116,7 +130,7 @@ It is highly important to make note of the following. Based on my internet uploa
 - Time to POST with delay added = 13.9 seconds + 2 * 30 seconds = 73.9 seconds total
 - Theoretical throughput = 300,000 requests / 73.9 seconds = 4,059.5 requests/sec
 
-I bring this up because my theoretical throughput for only POSTs requests is already so high. They are what “throttle” my results, but 4000 req/sec is already very fast. Thus, it is very difficult to optimize these results. As seen below, optimization was attempted, but my optimized results plateaued and ranged between 4,800 and 5,400 req/sec.
+I bring this up because my theoretical throughput for only POSTs requests is already so high. They are what “throttle” my results, but 4000 req/sec is already very fast. Thus, it isn't easy to optimize these results. As seen below, optimization was attempted, but my optimized results plateaued and ranged between 4,800 and 5,400 req/sec.
 
 I can achieve even better results if I scale up my resources. However, the free student trial account is limited and cannot scale past a certain point.
 
@@ -145,13 +159,7 @@ With these changes, as I scaled up my DB, I increased my Hikari connection pool 
 In total, I conducted five additional optimization tests. They each had the configurations seen in the table below.
 
 ## Table 3: Configurations of optimization tests.
-| Run Parameters | Servlets       | Database            |
-|---------------|----------------|----------|----------|
-| 10/30/2       | 2- (t2.micro)  | 1- t3.small (CP Size: 57) | 
-| 10/30/2       | 3- (t2.micro)  | 1- t3.small (CP Size: 57) | 
-| 10/30/2       | 3- (t2.micro)  | 1- t3.small (CP Size: 131) | 
-| 10/30/2       | 3- (t2.micro)  | 1- t3.medium(CP Size: 225) | 
-| 10/30/2       | 3- (t2.medium) | 1- t3.medium(CP Size: 225) | 
+![Results for Part 3 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part3_TableResults.png)
 
 Based on the optimization tests above, my DB and Servlets CPU usage was reasonable. Five peaks are seen, with the second and third peaks appearing as plateaus.
 
@@ -159,15 +167,97 @@ For my DB CPU usage, we see that as the DB is scaled up, the CPU usage is reduce
 
 Further, regarding the servlet CPU usage, as the request distribution goes from 2 to 3 servlets, the CPU usage drops ~8% to about 25%.
 
-![Image 11: CPU Utilization of DB and Servlet-1 for Part 5 optimizations](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Data_Model_SQL.png)
+![Image 11: CPU Utilization of DB for Part 5 optimizations](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-DB-CPU-UtilizationOptimizedTests.png)
+![Image 11: CPU Utilization of Servlet-1 for Part 5 optimizations](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/CS6650-Servlet1-CPU-UtilizationOptimizedTests.png)
+
+<p align="center">
+  <b>Image 11:</b> CPU Utilization of DB (left) and Servlet-1 (right) for Part 5.
+</p>
 
 From these optimizations, I achieved the following throughput % improvements.
 
 ## Table 4: % Change in throughput across all 10/30/2 phase tests
+![Results for Part 5 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Table4_Throughput_Comp_10-30-2.png)
 
-| Configurations- Run Parameters 10/30/2 | % Change Optimizations Caused |
-|-----------------------------------------|--------------------------------|
-| 2- (t2.micro)                          | 50.2% increase                 |
-| 3- (t2.micro)                          | 
+# Part 5 - Output Window Results
 
+**2 Servlets (t2.micro) - 1 DB (t3.small - CP Size: 57)**  
+![10/20/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-2Servlets1Db.png)
+<p align="center">
+  <b>Image 12:</b> Output window for 2 Servlets (t2.micro) - 1 DB (t3.small - CP Size: 57) run.
+</p>
 
+**3 Servlets (t2.micro) - 1 DB (t3.small - CP Size: 57)**  
+![10/20/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-2Servlets1Db.png)
+<p align="center">
+  <b>Image 13:</b> Output window for 3 Servlets (t2.micro) - 1 DB (t3.small - CP Size: 57) run.
+</p>
+
+**3 Servlets (t2.micro) - 1 DB (t3.small - CP Size: 141)**  
+![10/20/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-2Servlets1Db.png)
+<p align="center">
+  <b>Image 14:</b> Output window for 3 Servlets (t2.micro) - 1 DB (t3.small - CP Size: 141) run.
+</p>
+
+**3 Servlets (t2.micro) - 1 DB (t3.medium - CP Size: 225)**  
+![10/20/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-2Servlets1Db.png)
+<p align="center">
+  <b>Image 15:</b> Output window for 3 Servlets (t2.micro) - 1 DB (t3.medium - CP Size: 225) run.
+</p>
+
+**3 Servlets (t2.medium) - 1 DB (t3.medium - CP Size: 225)**  
+![10/20/2 Two Server Results Image](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/A2-10-20-2Servlets1Db.png)
+<p align="center">
+  <b>Image 16:</b> Output window for 3 Servlets (t2.medium) - 1 DB (t3.medium - CP Size: 225) run.
+</p>
+
+# Part 5 - Table Results
+
+## Table 5: Measured Results for Part 5 of Assignment 2
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+## Table 6: POST Calculated Results for Part 5 of Assignment 2
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+## Table 7: GET Calculated Results for Part 5 of Assignment 2
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+# Part 5 - Server/DB Results Comparison
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+## Table 8: Measured Results for Part 5 of Assignment 2
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+## Table 9: POST Calculated Results for Part 5 of Assignment 2
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+## Table 10: GET Calculated Results for Part 5 of Assignment 2
+![Results for Part 4 Table](https://github.com/tsanevp/Music-Album-Microservice-Part2/blob/main/Client/src/main/java/A2Results/Part4_TableResults.png)
+
+# Supplemental Screenshots
+
+## ALB & Target Groups
+
+Image 17: My Application Load Balancer configuration.
+
+Image 18: My target group configuration for my three servlets.
+
+## DB After Testing
+
+Below, I have included a screenshot of my DB after performing a 10/30/2 phase test. As seen, the DB now contains 301,000 entries, with the first entry printed. The additional 1,000 entries are from my initialization phase.
+
+Image 19: MySQL DB after the 10/30/2 phase test.
+
+After each test, I cleared my DB and deleted all entries. This helped keep the DB size relatively small and consistent across all tests. Further, deleting entries after each test reduced the data the DB had to process during writes and queries. The assignment did not specify this was not allowed, and since it helped reduce latencies across requests, I took advantage of it.
+
+I could never connect to MySQL DB locally using MySQL Workbench or DBeaver. After ensuring my security groups allowed traffic to my IP and my DB was publicly accessible, I resorted to connecting to my DB using the CLI.
+
+## CPU Utilization For DB/EC2 Instances Across All Tests
+
+Image 20: MySQL DB CPU utilization across all phase tests.
+
+Image 21: MySQL Servlet 1 CPU utilization across all phase tests.
+
+Image 22: MySQL Servlet 2 CPU utilization across all phase tests.
+
+Image 23: MySQL Servlet 3 CPU utilization across all phase tests.
