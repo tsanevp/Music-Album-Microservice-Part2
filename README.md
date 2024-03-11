@@ -1,4 +1,3 @@
-![image](https://github.com/tsanevp/Music-Album-Microservice-Part2/assets/78775944/0aa8ec26-1653-4f3a-9d66-273d739bd243)# Music Album Microservice - Part 2
 ## Overview
 This repository is Part 2 of a series of projects to develop a scalable distributed system running on AWS. It directly builds on the [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main). This project focuses on implementing a database that persists data from the existing servlet application. Here are the key components of the project:
 
