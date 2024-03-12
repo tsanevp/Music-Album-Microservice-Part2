@@ -1,6 +1,19 @@
 ## Overview
 This repository is Part 2 of a series of projects to develop a scalable distributed system running on AWS. It directly builds on the [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main). This project focuses on implementing a database that persists data from the existing servlet application. Here are the key components of the project:
 
+- [Music Album Microservice - Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1) -> Developed scalable music service API with Java servlet and Go server.
+- [Music Album Microservice - Part 3](https://github.com/tsanevp/Music-Album-Microservice-Part3) -> Enhances system with asynchronous album reviews, RabbitMQ, and performance optimization.
+- [Music Album Microservice - Part 4](https://github.com/tsanevp/Music-Album-Microservice-Part4) -> Focuses on querying album likes/dislikes and optimizing response time.
+
+## Project Structure
+
+<p align="center">
+  <img src="https://github.com/tsanevp/Music-Album-Microservice-Part1/blob/main/Client/src/main/java/AlbumMicroservice_SystemArchitechture_Part1.png" alt="System Architechture Part 1">
+</p>
+<p align="center">
+  <b>Image 1:</b> Album Microservice System Architechture.
+</p>
+
 - **Client Modifications**:
   - Minor changes to the client from [Part 1](https://github.com/tsanevp/Music-Album-Microservice-Part1/tree/main) are required.
   - Print out the number of successful and failed requests after the test.
